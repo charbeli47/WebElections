@@ -1,0 +1,674 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="neematEfremModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="cms_groups">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="cms_permissions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="cms_policies">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="permissionId" Type="int" />
+          <Property Name="groupId" Type="int" />
+          <Property Name="event_permitted" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="cms_user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="nvarchar(max)" />
+          <Property Name="password" Type="nvarchar(max)" />
+          <Property Name="groupId" Type="int" />
+          <Property Name="date_login" Type="datetime" />
+          <Property Name="isOnline" Type="bit" />
+          <Property Name="img" Type="nvarchar(max)" />
+          <Property Name="status" Type="int" />
+          <Property Name="firstname" Type="nvarchar(max)" />
+          <Property Name="lastname" Type="nvarchar(max)" />
+          <Property Name="phone" Type="nvarchar(max)" />
+          <Property Name="address" Type="nvarchar(max)" />
+          <Property Name="email" Type="nvarchar(max)" />
+          <Property Name="ZoneId" Type="int" />
+          <Property Name="parentId" Type="int" />
+        </EntityType>
+        <EntityType Name="SearchList">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ta2ifa" Type="nvarchar(max)" />
+          <Property Name="street" Type="nvarchar(max)" />
+          <Property Name="segel" Type="nvarchar" MaxLength="50" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="50" />
+          <Property Name="FirstName" Type="nvarchar(max)" />
+          <Property Name="MiddleName" Type="nvarchar(max)" />
+          <Property Name="LastName" Type="nvarchar(max)" />
+          <Property Name="MotherName" Type="nvarchar(max)" />
+          <Property Name="DOB" Type="datetime" />
+          <Property Name="VoterID" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="WebUsers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="500" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" />
+          <Property Name="Username" Type="nvarchar" MaxLength="100" />
+          <Property Name="Password" Type="nvarchar(max)" />
+          <Property Name="ipAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="UserType" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="ZoneId" Type="int" />
+          <Property Name="MemberId" Type="bigint" />
+          <Property Name="parentId" Type="int" />
+        </EntityType>
+        <EntityType Name="WebUsersSearchList">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WebUserId" Type="bigint" />
+          <Property Name="SearchListId" Type="int" />
+          <Property Name="Phone" Type="nvarchar(max)" />
+          <Property Name="Khasa2iss" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="sakan" Type="nvarchar(max)" />
+          <Property Name="marga3" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Zones">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ZoneId" Type="nvarchar(max)" />
+          <Property Name="ZoneName" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_cms_policies_cms_groups">
+          <End Role="cms_groups" Type="Self.cms_groups" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="cms_policies" Type="Self.cms_policies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms_groups">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms_policies">
+              <PropertyRef Name="groupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cms_policies_cms_permissions">
+          <End Role="cms_permissions" Type="Self.cms_permissions" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="cms_policies" Type="Self.cms_policies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms_permissions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms_policies">
+              <PropertyRef Name="permissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cms_user_cms_groups">
+          <End Role="cms_groups" Type="Self.cms_groups" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="cms_user" Type="Self.cms_user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms_groups">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms_user">
+              <PropertyRef Name="groupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cms_user_Zones">
+          <End Role="Zones" Type="Self.Zones" Multiplicity="0..1" />
+          <End Role="cms_user" Type="Self.cms_user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Zones">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms_user">
+              <PropertyRef Name="ZoneId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebUsers_cms_user">
+          <End Role="cms_user" Type="Self.cms_user" Multiplicity="0..1" />
+          <End Role="WebUsers" Type="Self.WebUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms_user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="WebUsers">
+              <PropertyRef Name="parentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebUsers_Zones">
+          <End Role="Zones" Type="Self.Zones" Multiplicity="0..1" />
+          <End Role="WebUsers" Type="Self.WebUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Zones">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="WebUsers">
+              <PropertyRef Name="ZoneId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebUsersSearchList_SearchList">
+          <End Role="SearchList" Type="Self.SearchList" Multiplicity="0..1" />
+          <End Role="WebUsersSearchList" Type="Self.WebUsersSearchList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SearchList">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="WebUsersSearchList">
+              <PropertyRef Name="SearchListId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebUsersSearchList_WebUsers">
+          <End Role="WebUsers" Type="Self.WebUsers" Multiplicity="0..1" />
+          <End Role="WebUsersSearchList" Type="Self.WebUsersSearchList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebUsers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="WebUsersSearchList">
+              <PropertyRef Name="WebUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="neematEfremModelStoreContainer">
+          <EntitySet Name="cms_groups" EntityType="Self.cms_groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_permissions" EntityType="Self.cms_permissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_policies" EntityType="Self.cms_policies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_user" EntityType="Self.cms_user" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SearchList" EntityType="Self.SearchList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WebUsers" EntityType="Self.WebUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WebUsersSearchList" EntityType="Self.WebUsersSearchList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Zones" EntityType="Self.Zones" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_cms_policies_cms_groups" Association="Self.FK_cms_policies_cms_groups">
+            <End Role="cms_groups" EntitySet="cms_groups" />
+            <End Role="cms_policies" EntitySet="cms_policies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cms_policies_cms_permissions" Association="Self.FK_cms_policies_cms_permissions">
+            <End Role="cms_permissions" EntitySet="cms_permissions" />
+            <End Role="cms_policies" EntitySet="cms_policies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cms_user_cms_groups" Association="Self.FK_cms_user_cms_groups">
+            <End Role="cms_groups" EntitySet="cms_groups" />
+            <End Role="cms_user" EntitySet="cms_user" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cms_user_Zones" Association="Self.FK_cms_user_Zones">
+            <End Role="Zones" EntitySet="Zones" />
+            <End Role="cms_user" EntitySet="cms_user" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebUsers_cms_user" Association="Self.FK_WebUsers_cms_user">
+            <End Role="cms_user" EntitySet="cms_user" />
+            <End Role="WebUsers" EntitySet="WebUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebUsers_Zones" Association="Self.FK_WebUsers_Zones">
+            <End Role="Zones" EntitySet="Zones" />
+            <End Role="WebUsers" EntitySet="WebUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebUsersSearchList_SearchList" Association="Self.FK_WebUsersSearchList_SearchList">
+            <End Role="SearchList" EntitySet="SearchList" />
+            <End Role="WebUsersSearchList" EntitySet="WebUsersSearchList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebUsersSearchList_WebUsers" Association="Self.FK_WebUsersSearchList_WebUsers">
+            <End Role="WebUsers" EntitySet="WebUsers" />
+            <End Role="WebUsersSearchList" EntitySet="WebUsersSearchList" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="neematEfremModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DCEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="cms_groups" EntityType="neematEfremModel.cms_groups" />
+          <EntitySet Name="cms_permissions" EntityType="neematEfremModel.cms_permissions" />
+          <EntitySet Name="cms_policies" EntityType="neematEfremModel.cms_policies" />
+          <EntitySet Name="cms_user" EntityType="neematEfremModel.cms_user" />
+          <EntitySet Name="SearchLists" EntityType="neematEfremModel.SearchList" />
+          <EntitySet Name="sysdiagrams" EntityType="neematEfremModel.sysdiagram" />
+          <EntitySet Name="WebUsers" EntityType="neematEfremModel.WebUser" />
+          <EntitySet Name="WebUsersSearchLists" EntityType="neematEfremModel.WebUsersSearchList" />
+          <EntitySet Name="Zones" EntityType="neematEfremModel.Zone" />
+          <AssociationSet Name="FK_cms_policies_cms_groups" Association="neematEfremModel.FK_cms_policies_cms_groups">
+            <End Role="cms_groups" EntitySet="cms_groups" />
+            <End Role="cms_policies" EntitySet="cms_policies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cms_user_cms_groups" Association="neematEfremModel.FK_cms_user_cms_groups">
+            <End Role="cms_groups" EntitySet="cms_groups" />
+            <End Role="cms_user" EntitySet="cms_user" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cms_policies_cms_permissions" Association="neematEfremModel.FK_cms_policies_cms_permissions">
+            <End Role="cms_permissions" EntitySet="cms_permissions" />
+            <End Role="cms_policies" EntitySet="cms_policies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cms_user_Zones" Association="neematEfremModel.FK_cms_user_Zones">
+            <End Role="Zone" EntitySet="Zones" />
+            <End Role="cms_user" EntitySet="cms_user" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebUsers_cms_user" Association="neematEfremModel.FK_WebUsers_cms_user">
+            <End Role="cms_user" EntitySet="cms_user" />
+            <End Role="WebUser" EntitySet="WebUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebUsersSearchList_SearchList" Association="neematEfremModel.FK_WebUsersSearchList_SearchList">
+            <End Role="SearchList" EntitySet="SearchLists" />
+            <End Role="WebUsersSearchList" EntitySet="WebUsersSearchLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebUsers_Zones" Association="neematEfremModel.FK_WebUsers_Zones">
+            <End Role="Zone" EntitySet="Zones" />
+            <End Role="WebUser" EntitySet="WebUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebUsersSearchList_WebUsers" Association="neematEfremModel.FK_WebUsersSearchList_WebUsers">
+            <End Role="WebUser" EntitySet="WebUsers" />
+            <End Role="WebUsersSearchList" EntitySet="WebUsersSearchLists" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="cms_groups">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="cms_policies" Relationship="neematEfremModel.FK_cms_policies_cms_groups" FromRole="cms_groups" ToRole="cms_policies" />
+          <NavigationProperty Name="cms_user" Relationship="neematEfremModel.FK_cms_user_cms_groups" FromRole="cms_groups" ToRole="cms_user" />
+        </EntityType>
+        <EntityType Name="cms_permissions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="cms_policies" Relationship="neematEfremModel.FK_cms_policies_cms_permissions" FromRole="cms_permissions" ToRole="cms_policies" />
+        </EntityType>
+        <EntityType Name="cms_policies">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="permissionId" Type="Int32" />
+          <Property Name="groupId" Type="Int32" />
+          <Property Name="event_permitted" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="cms_groups" Relationship="neematEfremModel.FK_cms_policies_cms_groups" FromRole="cms_policies" ToRole="cms_groups" />
+          <NavigationProperty Name="cms_permissions" Relationship="neematEfremModel.FK_cms_policies_cms_permissions" FromRole="cms_policies" ToRole="cms_permissions" />
+        </EntityType>
+        <EntityType Name="cms_user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="groupId" Type="Int32" />
+          <Property Name="date_login" Type="DateTime" Precision="3" />
+          <Property Name="isOnline" Type="Boolean" />
+          <Property Name="img" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="status" Type="Int32" />
+          <Property Name="firstname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="lastname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ZoneId" Type="Int32" />
+          <Property Name="parentId" Type="Int32" />
+          <NavigationProperty Name="cms_groups" Relationship="neematEfremModel.FK_cms_user_cms_groups" FromRole="cms_user" ToRole="cms_groups" />
+          <NavigationProperty Name="Zone" Relationship="neematEfremModel.FK_cms_user_Zones" FromRole="cms_user" ToRole="Zone" />
+          <NavigationProperty Name="WebUsers" Relationship="neematEfremModel.FK_WebUsers_cms_user" FromRole="cms_user" ToRole="WebUser" />
+        </EntityType>
+        <EntityType Name="SearchList">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ta2ifa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="street" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="segel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MotherName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DOB" Type="DateTime" Precision="3" />
+          <Property Name="VoterID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="WebUsersSearchLists" Relationship="neematEfremModel.FK_WebUsersSearchList_SearchList" FromRole="SearchList" ToRole="WebUsersSearchList" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="WebUser">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ipAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ZoneId" Type="Int32" />
+          <Property Name="MemberId" Type="Int64" />
+          <Property Name="parentId" Type="Int32" />
+          <NavigationProperty Name="cms_user" Relationship="neematEfremModel.FK_WebUsers_cms_user" FromRole="WebUser" ToRole="cms_user" />
+          <NavigationProperty Name="Zone" Relationship="neematEfremModel.FK_WebUsers_Zones" FromRole="WebUser" ToRole="Zone" />
+          <NavigationProperty Name="WebUsersSearchLists" Relationship="neematEfremModel.FK_WebUsersSearchList_WebUsers" FromRole="WebUser" ToRole="WebUsersSearchList" />
+        </EntityType>
+        <EntityType Name="WebUsersSearchList">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WebUserId" Type="Int64" />
+          <Property Name="SearchListId" Type="Int32" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Khasa2iss" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sakan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="marga3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SearchList" Relationship="neematEfremModel.FK_WebUsersSearchList_SearchList" FromRole="WebUsersSearchList" ToRole="SearchList" />
+          <NavigationProperty Name="WebUser" Relationship="neematEfremModel.FK_WebUsersSearchList_WebUsers" FromRole="WebUsersSearchList" ToRole="WebUser" />
+        </EntityType>
+        <EntityType Name="Zone">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ZoneId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ZoneName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="cms_user" Relationship="neematEfremModel.FK_cms_user_Zones" FromRole="Zone" ToRole="cms_user" />
+          <NavigationProperty Name="WebUsers" Relationship="neematEfremModel.FK_WebUsers_Zones" FromRole="Zone" ToRole="WebUser" />
+        </EntityType>
+        <Association Name="FK_cms_policies_cms_groups">
+          <End Type="neematEfremModel.cms_groups" Role="cms_groups" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="neematEfremModel.cms_policies" Role="cms_policies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms_groups">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms_policies">
+              <PropertyRef Name="groupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cms_user_cms_groups">
+          <End Type="neematEfremModel.cms_groups" Role="cms_groups" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="neematEfremModel.cms_user" Role="cms_user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms_groups">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms_user">
+              <PropertyRef Name="groupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cms_policies_cms_permissions">
+          <End Type="neematEfremModel.cms_permissions" Role="cms_permissions" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="neematEfremModel.cms_policies" Role="cms_policies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms_permissions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms_policies">
+              <PropertyRef Name="permissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cms_user_Zones">
+          <End Type="neematEfremModel.Zone" Role="Zone" Multiplicity="0..1" />
+          <End Type="neematEfremModel.cms_user" Role="cms_user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Zone">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cms_user">
+              <PropertyRef Name="ZoneId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebUsers_cms_user">
+          <End Type="neematEfremModel.cms_user" Role="cms_user" Multiplicity="0..1" />
+          <End Type="neematEfremModel.WebUser" Role="WebUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms_user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="WebUser">
+              <PropertyRef Name="parentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebUsersSearchList_SearchList">
+          <End Type="neematEfremModel.SearchList" Role="SearchList" Multiplicity="0..1" />
+          <End Type="neematEfremModel.WebUsersSearchList" Role="WebUsersSearchList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SearchList">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="WebUsersSearchList">
+              <PropertyRef Name="SearchListId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebUsers_Zones">
+          <End Type="neematEfremModel.Zone" Role="Zone" Multiplicity="0..1" />
+          <End Type="neematEfremModel.WebUser" Role="WebUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Zone">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="WebUser">
+              <PropertyRef Name="ZoneId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebUsersSearchList_WebUsers">
+          <End Type="neematEfremModel.WebUser" Role="WebUser" Multiplicity="0..1" />
+          <End Type="neematEfremModel.WebUsersSearchList" Role="WebUsersSearchList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WebUser">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="WebUsersSearchList">
+              <PropertyRef Name="WebUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="neematEfremModelStoreContainer" CdmEntityContainer="DCEntities">
+          <EntitySetMapping Name="cms_groups">
+            <EntityTypeMapping TypeName="neematEfremModel.cms_groups">
+              <MappingFragment StoreEntitySet="cms_groups">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms_permissions">
+            <EntityTypeMapping TypeName="neematEfremModel.cms_permissions">
+              <MappingFragment StoreEntitySet="cms_permissions">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms_policies">
+            <EntityTypeMapping TypeName="neematEfremModel.cms_policies">
+              <MappingFragment StoreEntitySet="cms_policies">
+                <ScalarProperty Name="event_permitted" ColumnName="event_permitted" />
+                <ScalarProperty Name="groupId" ColumnName="groupId" />
+                <ScalarProperty Name="permissionId" ColumnName="permissionId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms_user">
+            <EntityTypeMapping TypeName="neematEfremModel.cms_user">
+              <MappingFragment StoreEntitySet="cms_user">
+                <ScalarProperty Name="parentId" ColumnName="parentId" />
+                <ScalarProperty Name="ZoneId" ColumnName="ZoneId" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="img" ColumnName="img" />
+                <ScalarProperty Name="isOnline" ColumnName="isOnline" />
+                <ScalarProperty Name="date_login" ColumnName="date_login" />
+                <ScalarProperty Name="groupId" ColumnName="groupId" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SearchLists">
+            <EntityTypeMapping TypeName="neematEfremModel.SearchList">
+              <MappingFragment StoreEntitySet="SearchList">
+                <ScalarProperty Name="VoterID" ColumnName="VoterID" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="MotherName" ColumnName="MotherName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="segel" ColumnName="segel" />
+                <ScalarProperty Name="street" ColumnName="street" />
+                <ScalarProperty Name="ta2ifa" ColumnName="ta2ifa" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="neematEfremModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WebUsers">
+            <EntityTypeMapping TypeName="neematEfremModel.WebUser">
+              <MappingFragment StoreEntitySet="WebUsers">
+                <ScalarProperty Name="parentId" ColumnName="parentId" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="ZoneId" ColumnName="ZoneId" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="ipAddress" ColumnName="ipAddress" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WebUsersSearchLists">
+            <EntityTypeMapping TypeName="neematEfremModel.WebUsersSearchList">
+              <MappingFragment StoreEntitySet="WebUsersSearchList">
+                <ScalarProperty Name="marga3" ColumnName="marga3" />
+                <ScalarProperty Name="sakan" ColumnName="sakan" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Khasa2iss" ColumnName="Khasa2iss" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="SearchListId" ColumnName="SearchListId" />
+                <ScalarProperty Name="WebUserId" ColumnName="WebUserId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Zones">
+            <EntityTypeMapping TypeName="neematEfremModel.Zone">
+              <MappingFragment StoreEntitySet="Zones">
+                <ScalarProperty Name="ZoneName" ColumnName="ZoneName" />
+                <ScalarProperty Name="ZoneId" ColumnName="ZoneId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
