@@ -15,11 +15,33 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.bpopup.min.js"></script>
     <style>
         .ui-widget.ui-widget-content
         {
             z-index:999999999999 !important;
         }
+        .button.b-close, .button.bClose {
+    border-radius: 7px 7px 7px 7px;
+    box-shadow: none;
+    font: bold 131% sans-serif;
+    padding: 0 6px 2px;
+    position: absolute;
+    right: -7px;
+    top: -7px;
+    z-index:99999;
+}
+.button {
+    background-color: #2b91af;
+    border-radius: 10px;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.3);
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+}
     </style>
 </head>
 <body onload="OnChange('#segel','segels');OnChange('#FirstName','firstnames');OnChange('#MiddleName','middlenames');OnChange('#LastName','lastnames');OnChange('#MotherName','mothernames')">
@@ -71,9 +93,17 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <div class="input-group">
+                                    <span class="input-group-addon">رقم السجل:</span>
+                                    <div class="ui-widget">
+                                    <input name="segel" id="segel"  type="text" onkeyup="this.value = parseArabic(this.value)" class="form-control" onfocus="OnChange('#segel','segels');OnChange('#FirstName','firstnames');OnChange('#MiddleName','middlenames');OnChange('#LastName','lastnames');OnChange('#MotherName','mothernames')" onchange="CompleteFilling()">
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
                                     <span class="input-group-addon">الاسم:</span>
                                     <div class="ui-widget">
-                                    <input name="FirstName" id="FirstName" type="text" class="form-control" onfocus="OnChange('#segel','segels');OnChange('#FirstName','firstnames');OnChange('#MiddleName','middlenames');OnChange('#LastName','lastnames');OnChange('#MotherName','mothernames')">
+                                    <input name="FirstName" id="FirstName" type="text" class="form-control" onfocus="OnChange('#segel','segels');OnChange('#FirstName','firstnames');OnChange('#MiddleName','middlenames');OnChange('#LastName','lastnames');OnChange('#MotherName','mothernames')" onchange="CompleteFilling()">
                                         </div>
                                 </div>
                             </div>
@@ -81,7 +111,7 @@
                                 <div class="input-group">
                                     <span class="input-group-addon">اسم الاب:</span>
                                     <div class="ui-widget">
-                                    <input name="MiddleName" id="MiddleName" type="text" class="form-control" onfocus="OnChange('#segel','segels');OnChange('#FirstName','firstnames');OnChange('#MiddleName','middlenames');OnChange('#LastName','lastnames');OnChange('#MotherName','mothernames')">
+                                    <input name="MiddleName" id="MiddleName" type="text" class="form-control" onfocus="OnChange('#segel','segels');OnChange('#FirstName','firstnames');OnChange('#MiddleName','middlenames');OnChange('#LastName','lastnames');OnChange('#MotherName','mothernames')" onchange="CompleteFilling()">
                                         </div>
                                 </div>
                             </div>
@@ -89,7 +119,7 @@
                                 <div class="input-group">
                                     <span class="input-group-addon">الشهرة:</span>
                                     <div class="ui-widget">
-                                    <input name="LastName" id="LastName" type="text" class="form-control" onfocus="OnChange('#segel','segels');OnChange('#FirstName','firstnames');OnChange('#MiddleName','middlenames');OnChange('#LastName','lastnames');OnChange('#MotherName','mothernames')">
+                                    <input name="LastName" id="LastName" type="text" class="form-control" onfocus="OnChange('#segel','segels');OnChange('#FirstName','firstnames');OnChange('#MiddleName','middlenames');OnChange('#LastName','lastnames');OnChange('#MotherName','mothernames')" onchange="CompleteFilling()">
                                         </div>
                                 </div>
                             </div>
@@ -113,14 +143,7 @@
                                         </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon">رقم السجل:</span>
-                                    <div class="ui-widget">
-                                    <input name="segel" id="segel"  type="text" onkeyup="this.value = parseArabic(this.value)" class="form-control" onfocus="OnChange('#segel','segels');OnChange('#FirstName','firstnames');OnChange('#MiddleName','middlenames');OnChange('#LastName','lastnames');OnChange('#MotherName','mothernames')">
-                                        </div>
-                                </div>
-                            </div>
+                            
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon">الجنس:</span>
@@ -179,6 +202,10 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div>
+    <div id="morethanOne" style="display:none;width:80%">
+        <span class="button b-close"><span>X</span></span>
+        <div class="content" id="contentMoreThanOne" style="padding:10px;background-color:white;min-height:400px;position:relative"></div>
+    </div>
     <%
         //string segelstring = "";
         //foreach (var row in segels)
@@ -297,6 +324,47 @@
                 str = str.replace(arab[i],eng[i]);
             }
             return str;
+        }
+        var bPop;
+        function CompleteFilling()
+        {
+            var segel = $("#segel").val();
+            var FirstName = $("#FirstName").val();
+            var MiddleName = $("#MiddleName").val();
+            var LastName = $("#LastName").val();
+            if (segel != "" && FirstName != "" && MiddleName != "" && LastName != "")
+                $.post("ajax/CompleteFilling.ashx", { segel: segel, FirstName: FirstName, MiddleName: MiddleName, LastName: LastName }, function (data) {
+                    if (data.length > 1) {
+                        var innerString = '';
+                        for (var i = 0; i < data.length; i++) {
+                            innerString += '<div class="col-lg-4 col-sm-4" style="background-color:' + (i % 2 == 0 ? 'gray' : '#d4d4d4') + ';color:' + (i % 2 == 0 ? 'white' : 'black') + ';cursor:pointer" onclick="FillThis(\'' + data[i].MotherName + '\',\'' + data[i].street + '\',\'' + data[i].Gender + '\',\'' + data[i].DOB + '\')"><table dir="rtl" style="padding:10px"><tr><td>الاسم:</td><td>' + data[i].FirstName + '</td></tr><tr><td>اسم الاب:</td><td>' + data[i].MiddleName + '</td></tr><tr><td>الشهرة:</td><td>' + data[i].LastName + '</td></tr><tr><td>اسم الام:</td><td>' + data[i].MotherName + '</td></tr><tr><td>هوية الناخب:</td><td>' + data[i].VoterID + '</td></tr><tr><td>طائفة اللائحة:</td><td>' + data[i].ta2ifa + '</td></tr><tr><td>البلدة او الحي:</td><td>' + data[i].street + '</td></tr><tr><td>رقم السجل:</td><td>' + data[i].segel + '</td></tr><tr><td>الجنس:</td><td>' + data[i].Gender + '</td></tr><tr><td>تاريخ الولادة:</td><td>' + data[i].DOB + '</td></tr></table></div>';
+                        }
+                        $("#contentMoreThanOne").html(innerString);
+                        bPop = $('#morethanOne').bPopup({
+                            speed: 450,
+                            transition: 'slideDown',
+
+                        });
+                    }
+                    else
+                    {
+                        for (var i = 0; i < data.length; i++) {
+                            $("#MotherName").val(data[i].MotherName);
+                            $("#sakan").val(data[i].street);
+                            $("#Gender").val(data[i].Gender);
+                            $("#DOB").val(data[i].DOB);
+                        }
+                    }
+                    
+                });
+        }
+        function FillThis(MotherName, street, Gendder, DOB)
+        {
+            $("#MotherName").val(MotherName);
+            $("#sakan").val(street);
+            $("#Gender").val(Gender);
+            $("#DOB").val(DOB);
+            bPop.close();
         }
     </script>
 </body>
